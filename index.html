@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AWS re:Invent 2026 - לוח האירועים שלי</title>
+<meta name="description" content="AWS re:Invent 2026, לאס וגאס, 30 בנובמבר - 4 בדצמבר: אירועי צד, מיקומים וסטטוסי הרשמה במבט אחד.">
+<style>
+  :root {
+    --page:#faf6f3; --ink:#251f21; --ink-2:#6f6663; --hairline:#e8e1dd;
+    --food:#f26a3d; --conf:#4f5bd5; --social:#a64fd0; --open:#8a8486;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; min-height:100%; }
+  body { background:var(--page); color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Hebrew", "Heebo", Arial, sans-serif;
+    font-size:15px; line-height:1.45; padding:20px 16px 40px; }
+  .ag { display:block; }
+  .ag-title { font-weight:500; font-size:32px; letter-spacing:-0.025em; margin:0; }
+  .ag-sub { margin:4px 0 16px; color:var(--ink-2); }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; padding:2px 0 14px; }
+  .chip { flex:none; display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:0 12px;
+    border-radius:22px; border:1.5px solid var(--hairline); background:#fff; color:var(--ink);
+    font:inherit; font-weight:600; cursor:pointer; }
+  .chip svg { width:18px; height:18px; }
+  .chip.cat-all.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .chip.cat-conf.on { background:var(--conf); border-color:var(--conf); color:#fff; }
+  .chip.cat-food.on { background:var(--food); border-color:var(--food); color:#fff; }
+  .chip.cat-social.on { background:var(--social); border-color:var(--social); color:#fff; }
+  .day { margin-top:18px; }
+  .day-head { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .day-num { width:48px; height:52px; border-radius:14px; background:var(--ink); color:#fff;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.05; }
+  .day-num b { font-size:20px; } .day-num small { font-size:11px; opacity:.8; }
+  .day-num.q { background:var(--open); }
+  .day-name { font-weight:600; font-size:16px; }
+  .empty { color:var(--ink-2); margin:4px 0 0; }
+  .ev { --c:var(--open); background:#fff; border:1px solid var(--hairline);
+    border-inline-start:6px solid var(--c); border-radius:16px; margin-bottom:10px; overflow:hidden;
+    box-shadow:0 1px 2px rgba(37,31,33,.05); }
+  .ev.cat-conf { --c:var(--conf); } .ev.cat-food { --c:var(--food); } .ev.cat-social { --c:var(--social); }
+  .ev.cat-open { border-style:dashed; border-inline-start-style:solid; }
+  .ev.is-open { box-shadow:0 4px 14px rgba(37,31,33,.12); }
+  .ev-head { text-align:start; display:flex; align-items:center; gap:10px; width:100%; padding:12px;
+    min-height:44px; cursor:pointer; border:none; background:none; font:inherit; color:inherit; }
+  .ev-head:focus-visible { outline:2px solid var(--c); outline-offset:-2px; }
+  .ev-icon { flex:none; color:var(--c); width:40px; height:40px; border-radius:12px; display:flex;
+    align-items:center; justify-content:center; background:color-mix(in srgb, var(--c) 15%, #fff); }
+  .ev-icon svg { width:22px; height:22px; }
+  .ev-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+  .ev-time { font-size:12px; font-weight:600; color:var(--c); }
+  .ev-title { font-weight:600; font-size:15px; line-height:1.3; overflow-wrap:anywhere; }
+  .ev-place { display:flex; align-items:center; gap:4px; line-height:1.4; font-size:12px; color:var(--ink-2); overflow-wrap:anywhere; }
+  .ev-place svg { width:12px; height:12px; flex:none; }
+  .pill { flex:none; align-self:flex-start; display:inline-flex; align-items:center; gap:5px; font-size:11px;
+    font-weight:600; padding:3px 8px; border-radius:10px; background:#f4efec; color:var(--ink);
+    max-width:92px; text-align:center; line-height:1.2; }
+  .pill i { flex:none; width:8px; height:8px; border-radius:50%; background:#999; }
+  .st-reg i { background:#1f9d68; } .st-reg { background:#e3f5ec; }
+  .st-pend i { background:#e0a100; } .st-pend { background:#fdf3d6; }
+  .st-wait i { background:#2f80ed; } .st-wait { background:#e1edfd; }
+  .st-none i { background:#8a8486; }
+  .chev { flex:none; color:var(--ink-2); font-size:12px; align-self:center; }
+  .ev-detail { padding:4px 14px 14px; border-top:1px solid var(--hairline); }
+  .ev-detail dl { display:grid; grid-template-columns:auto 1fr; gap:6px 14px; margin:10px 0 0; }
+  .ev-detail dt { color:var(--ink-2); } .ev-detail dd { margin:0; font-weight:600; overflow-wrap:anywhere; }
+  .muted { color:var(--ink-2); font-weight:350; }
+  .note { margin:10px 0 0; padding:10px 12px; border-radius:10px; background:color-mix(in srgb, var(--c) 10%, #fff); }
+  .links { display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:10px; }
+  .links a { display:inline-flex; align-items:center; min-height:44px; color:var(--conf); font-weight:600; text-decoration:none; }
+  .links a:hover { text-decoration:underline; }
+  .foot { margin-top:22px; color:var(--ink-2); font-size:12px; line-height:20px; }
+  @media (min-width:768px) { .ag { max-width:720px; margin:0 auto; } }
+</style>
+</head>
+<body>
+<div class="ag">
+  <h1 class="ag-title">AWS re:Invent</h1>
+  <p class="ag-sub">30 בנובמבר - 4 בדצמבר 2026 · לאס וגאס · שעות PT</p>
+  <div class="chips" role="group" aria-label="סינון לפי קטגוריה" id="chips"></div>
+  <div id="days"></div>
+  <p class="foot">הסטטוסים נרשמו בשליחת ההרשמות, 3-4 בנובמבר 2026. אישורי מארחים מגיעים במייל ולא מתעדכנים כאן. שום דבר לא נרשם מהדף הזה.</p>
+</div>
+<script>
+var ICONS = {
+  conf: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  food: '<path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 21V3c-2.5 1.5-3 5-3 8h3"/>',
+  social: '<path d="M6 3h12l-6 9zM12 12v9M8 21h8"/>',
+  open: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>'
+};
+var PIN = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+function icon(k){ return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONS[k] + '</svg>'; }
+var CATS = { conf:{label:'כנס',icon:'conf'}, food:{label:'אוכל',icon:'food'}, social:{label:'ערב וחברתי',icon:'social'}, open:{label:'פתוח',icon:'open'} };
+var STS = { reg:'נרשם', pend:'ממתין לאישור', wait:'רשימת המתנה', none:'לא נשלח' };
+var STX = { reg:'ההרשמה אושרה', pend:'הבקשה נשלחה, ההחלטה אצל המארחים', wait:'בתור, אם יתפנה מקום', none:'עדיין לא נשלחה הרשמה' };
+var DAYS = [
+  {key:'mon', num:'30', month:'נוב׳', name:'יום שני, 30 בנובמבר'},
+  {key:'tue', num:'1', month:'דצמ׳', name:'יום שלישי, 1 בדצמבר'},
+  {key:'wed', num:'2', month:'דצמ׳', name:'יום רביעי, 2 בדצמבר'},
+  {key:'thu', num:'3', month:'דצמ׳', name:'יום חמישי, 3 בדצמבר'},
+  {key:'fri', num:'4', month:'דצמ׳', name:'יום שישי, 4 בדצמבר'}
+];
+var EVENTS = [
+  {id:'e1', day:'mon', time:'כל היום', title:'AWS re:Invent 2026', place:'לאס וגאס', cat:'conf', st:'reg', note:'הכנס נפתח ביום שני ונמשך עד יום שישי 4 בדצמבר.'},
+  {id:'e2', day:'mon', time:'20:00-22:00', title:'Skyflow + Descope executive dinner', place:'Delmonico, The Venetian', cat:'food', st:'wait', link:[{href:'https://www.skyflow.com/dinners/the-ai-enterprise-securing-data-identity-at-runtime', label:'דף האירוע'}]},
+  {id:'e3', day:'tue', time:'07:00-08:25', title:'Datadog + Anthropic + AWS AI Agents Breakfast', place:'Bazaar Meat, Palazzo', cat:'food', st:'reg', link:[{href:'https://events.datadoghq.com/aws-reinvent/scaling-your-ai-agents-with-datadog-and-our-partners/', label:'דף האירוע'}]},
+  {id:'e4', day:'tue', time:'13:00-14:30', title:'CTO Lunch', place:'Caesars Palace', cat:'food', st:'pend', note:'סינון לדרגת Director ומעלה.', link:[{href:'https://luma.com/nfv9qtqp', label:'דף האירוע'}]},
+  {id:'e5', day:'tue', time:'18:00-21:00', title:'Deepgram + Krisp + Twilio Speak Easy', place:'Allē Lounge on 66, Resorts World', cat:'social', st:'pend', note:'ייתכן שתגיע הודעת אימות מ-Luma לכתובת העבודה שלך; גם המארחים יכולים להמתין לשלב הזה.', link:[{href:'https://luma.com/reinvent-speak-easy', label:'דף האירוע'}]},
+  {id:'e6', day:'openx', time:'יום שלישי · טרם נבחר', title:'Thoughtworks', place:'ארוחת בוקר או Happy Hour', cat:'open', st:'none', stLabel:'מחכה לבחירתך', note:'לא נשלחה הרשמה. ארוחת הבוקר חופפת לארוחת Datadog, ואילו Happy Hour בשעות 18:00-20:00 חופף לאירוע Speak Easy.', link:[{href:'https://luma.com/platform-n4v9', label:'Thoughtworks executive breakfast'},{href:'https://events.thoughtworks.com/twshiftintohappyhour/TW-website', label:'Thoughtworks Happy Hour'}]},
+  {id:'e7', day:'wed', time:'17:00-20:00', title:'Cognition + Infosys After Hours', place:'Zero Bond, Wynn', cat:'social', st:'pend', link:[{href:'https://cognition.com/events/reinvent-after-hours', label:'דף האירוע'}]},
+  {id:'e8', day:'open', time:'מועד לא ידוע', title:'Formal Infra & Security Leadership Dinner', place:'מיקום לא ידוע', cat:'open', st:'none', stLabel:'צריך קישור', note:'לא נמצא דף הרשמה רשמי מאומת, ולכן אין קישור. כדי להתקדם צריך ממך את קישור ההרשמה.'},
+  {id:'e9', day:'thu', time:'16:00-19:00', title:'Redis Agent Arena', place:'Juliet Lounge, The Venetian', cat:'social', st:'reg', note:'לפי דף האירוע של Redis: ערב של משחקים תחרותיים סביב context engineering, עם אוכל וקוקטיילים. ברשימות חיצוניות הוא מופיע בשם Partner Happy Hour בשעות האלה.', link:[{href:'https://redis.io/events/agent-arena-at-aws-reinvent-2026/', label:'דף האירוע'}]},
+  {id:'e10', day:'fri', time:'כל היום', title:'AWS re:Invent 2026 מסתיים', place:'לאס וגאס', cat:'conf', note:'אין אירועי צד מתוכננים.'}
+];
+var filter = 'all', openId = null;
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function show(e){ return filter === 'all' || e.cat === filter || e.cat === 'open'; }
+function card(ev){
+  var c = CATS[ev.cat];
+  var open = openId === ev.id;
+  var h = '<div class="ev cat-' + ev.cat + (open ? ' is-open' : '') + '">' +
+    '<button class="ev-head" data-id="' + ev.id + '" aria-expanded="' + open + '" aria-controls="d-' + ev.id + '">' +
+      '<span class="ev-icon" aria-hidden="true">' + icon(c.icon) + '</span>' +
+      '<span class="ev-main">' +
+        '<span class="ev-time">' + c.label + ' · <bdi>' + esc(ev.time) + '</bdi></span>' +
+        '<span class="ev-title">' + esc(ev.title) + '</span>' +
+        '<span class="ev-place">' + PIN + ' ' + esc(ev.place) + '</span>' +
+      '</span>' +
+      (ev.st ? '<span class="pill st-' + ev.st + '"><i></i>' + esc(ev.stLabel || STS[ev.st]) + '</span>' : '') +
+      '<span class="chev" aria-hidden="true">' + (open ? '▴' : '▾') + '</span>' +
+    '</button>';
+  if (open) {
+    h += '<div class="ev-detail" id="d-' + ev.id + '"><dl>' +
+      '<dt>שעה</dt><dd><bdi>' + esc(ev.time) + '</bdi></dd>' +
+      '<dt>מיקום</dt><dd>' + esc(ev.place) + '</dd>' +
+      '<dt>קטגוריה</dt><dd>' + c.label + '</dd>';
+    if (ev.st) h += '<dt>סטטוס</dt><dd>' + esc(ev.stLabel || STS[ev.st]) + (ev.stLabel ? '' : '<span class="muted"> · ' + STX[ev.st] + '</span>') + '</dd>';
+    h += '</dl>';
+    if (ev.note) h += '<p class="note">' + esc(ev.note) + '</p>';
+    if (ev.link) h += '<div class="links">' + ev.link.map(function(l){ return '<a href="' + l.href + '" target="_blank" rel="noopener">' + esc(l.label) + ' ↗</a>'; }).join('') + '</div>';
+    h += '</div>';
+  }
+  return h + '</div>';
+}
+function render(){
+  var chips = ['all','conf','food','social'];
+  document.getElementById('chips').innerHTML = chips.map(function(k){
+    var cls = k === 'all' ? 'cat-all' : 'cat-' + k;
+    var label = k === 'all' ? 'הכול' : icon(CATS[k].icon) + ' ' + CATS[k].label;
+    return '<button class="chip ' + cls + (filter === k ? ' on' : '') + '" data-cat="' + k + '" aria-pressed="' + (filter === k) + '">' + label + '</button>';
+  }).join('');
+  var h = DAYS.map(function(d){
+    var list = EVENTS.filter(function(e){ return e.day === d.key && show(e); });
+    return '<section class="day"><div class="day-head"><span class="day-num"><b>' + d.num + '</b><small>' + d.month + '</small></span><span class="day-name">' + d.name + '</span></div>' +
+      (list.length === 0 ? '<p class="empty">אין אירועים בקטגוריה הזו</p>' : list.map(card).join('')) + '</section>';
+  }).join('');
+  h += '<section class="day"><div class="day-head"><span class="day-num q"><b>?</b></span><span class="day-name">עוד פתוח</span></div>' +
+    EVENTS.filter(function(e){ return e.day === 'open'; }).map(card).join('') +
+    card(EVENTS.filter(function(e){ return e.id === 'e6'; })[0]) + '</section>';
+  document.getElementById('days').innerHTML = h;
+}
+document.addEventListener('click', function(ev){
+  var chip = ev.target.closest('.chip');
+  if (chip) { filter = chip.getAttribute('data-cat'); render(); return; }
+  var head = ev.target.closest('.ev-head');
+  if (head) { var id = head.getAttribute('data-id'); openId = (openId === id ? null : id); render(); }
+});
+render();
+</script>
+</body>
+</html>
